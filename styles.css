@@ -1,0 +1,118 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: Helvetica, sans-serif;
+    box-sizing: border-box;
+}
+.wrapper {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #eaeaea;
+}
+.searchBlock {
+    display: flex;
+    flex-direction: column;
+    box-shadow: 1px 0 9px 2px #bfbfbf;
+}
+.searchBlock_input {
+    background-color: white;
+    color: #676767;
+    font-weight: 300;
+    width: 100%;
+    outline: none;
+    border: none;
+    font-size: 22px;
+}
+
+::-webkit-input-placeholder {
+    color: #eaeaea;
+    font-weight: 500;
+}
+
+:-ms-input-placeholder {
+    color: #eaeaea;
+    font-weight: 500;
+}
+
+::placeholder {
+    color: #eaeaea;
+    font-weight: 500;
+}
+
+.searchBlock_inputBlock {
+    padding: 20px 20px 20px 70px;
+    border-radius: 5px;
+    background-color: white;
+    min-width: 500px;
+    font-size: 22px;
+    position: relative;
+}
+.active .searchBlock_inputBlock {
+    border-bottom: 1px solid #d6d6d6;
+    border-bottom-left-radius: unset;
+    border-bottom-right-radius: unset;
+}
+
+.active .searchBlock_results {
+    border-top-left-radius: unset;
+    border-top-right-radius: unset;
+}
+
+.searchBlock_inputBlock:before {
+    content: '';
+    background-image: url("search.png");
+    width: 30px;
+    height: 30px;
+    background-size: contain;
+    position: absolute;
+    top: calc(50% - 15px);
+    left: 20px;
+}
+.searchBlock_results {
+    background-color: white;
+    border-radius: 5px;
+    padding: 15px 10px;
+    flex-direction: column;
+}
+
+.resultRow {
+    display: flex;
+    padding: 10px 15px;
+    border-radius: 5px;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.resultRow_main {
+    display: flex;
+    align-items: center;
+}
+
+
+span.resultRow_label {
+    background-color: rebeccapurple;
+    padding: 3px 5px;
+    border-radius: 5px;
+    color: white;
+    font-size: 12px;
+    margin-right: 15px;
+    text-transform: uppercase;
+}
+
+.resultRow_text {
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.resultRow_btn {
+    color:  gray;
+    font-size: 12px;
+    font-weight: 300;
+    cursor: pointer;
+}
+
