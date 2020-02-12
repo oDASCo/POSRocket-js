@@ -34,7 +34,7 @@ let resultData = [];
 
 let resultsBlock = document.getElementById('results');
 let row = '';
-// resultsBlock.style.display = 'none';
+
 
 let searchInput = document.getElementById('searchInput');
 let searchInputBlock = document.getElementById('searchInputBlock');
