@@ -1,39 +1,34 @@
 const data = [
     {
-        text: 'Daria Lazovskaya',
-        label: 'fizy',
+        text: 'John Dorie',
         color: 'red',
+        imageURL: "./assets/img/user.png",
         category: 'person'
     },
     {
-        text: 'Sasha Yarmolkevich',
-        label: 'lifebox',
+        text: 'Dean Gross',
+        imageURL: "./assets/img/user.png",
         color: 'blue',
         category: 'person'
     },
     {
-        text: 'Eche Ktoto',
-        label: 'durashka',
+        text: 'Where do i get good winter jacket?',
+        label: 'Fashion',
         color: 'red',
-        category: 'person'
+        category: 'question'
     },
     {
-        text: 'Masha Ivanova',
-        label: 'durashka',
-        color: 'green',
-        category: 'person'
-    },
-    {
-        text: 'Duria Bel',
-        label: 'durashka',
-        color: 'purple',
-        category: 'person'
-    },
+        text: 'Is it possible to ski with a normal winter jacket?',
+        label: 'Questions',
+        color: 'grey',
+        category: 'question'
+    }
 ];
 let resultData = [];
 
 let resultsBlock = document.getElementById('results');
-let row = '';
+let SearchRow = "";
+let recentSearchRow = "";
 
 
 let searchInput = document.getElementById('searchInput');
@@ -57,34 +52,51 @@ searchInput.addEventListener("keyup", (event) => {
     let currentInputValue = searchInput.value;
     let currentRow = document.getElementsByClassName("resultRow_current-choice");
     let allRowElements = document.getElementsByClassName("resultRow");
-    if(event.key === "ArrowDown"){
-        if(currentRow[0].nextElementSibling){
-            currentRow[0].nextElementSibling.classList.add("resultRow_current-choice");
-            currentRow[0].classList.remove("resultRow_current-choice");
-        }else{
-            allRowElements[allRowElements.length - 1].classList.remove("resultRow_current-choice");
-            allRowElements[0].classList.add("resultRow_current-choice");
+    if(currentRow[0]){
+        if(event.key === "ArrowDown"){
+            if(currentRow[0].nextElementSibling){
+                currentRow[0].nextElementSibling.classList.add("resultRow_current-choice");
+                currentRow[0].classList.remove("resultRow_current-choice");
+            }else{
+                allRowElements[allRowElements.length - 1].classList.remove("resultRow_current-choice");
+                allRowElements[0].classList.add("resultRow_current-choice");
+            }
+        }
+        if(event.key === "ArrowUp"){
+            if(currentRow[0].previousElementSibling && currentRow[0].previousElementSibling.className !== "resultRow_hint"){
+                currentRow[0].previousElementSibling.classList.add("resultRow_current-choice");
+                currentRow[1].classList.remove("resultRow_current-choice");
+            }else{
+                allRowElements[0].classList.remove("resultRow_current-choice");
+                allRowElements[allRowElements.length - 1].classList.add("resultRow_current-choice");
+            }
         }
     }
-    if(event.key === "ArrowUp"){
-        if(currentRow[0].previousElementSibling){
-            currentRow[0].previousElementSibling.classList.add("resultRow_current-choice");
-            currentRow[1].classList.remove("resultRow_current-choice");
+    if (event.key === "Enter") {
+        if(currentRow[0] && currentInputValue){
+            let highlightText = currentRow[0].childNodes[1].childNodes[3].innerText;
+            searchInput.value = highlightText;
+            saveRecentData(highlightText);
+            filterSearchResults(event);
+        }else if(currentRow[0] && !currentInputValue){
+            let highlightText = currentRow[0].childNodes[1].innerText;
+            searchInput.value = highlightText;
+            saveRecentData(highlightText);
+            filterSearchResults(event);
         }else{
-            allRowElements[0].classList.remove("resultRow_current-choice");
-            allRowElements[allRowElements.length - 1].classList.add("resultRow_current-choice");
+            saveRecentData(currentInputValue);
         }
-    }
-    if (event.key === "Enter" && currentInputValue) {
-        saveRecentData(currentInputValue);
-        if (!resultData.length) {
-            displayRecentChoice();
-        }
+
     }
 });
 
 searchInput.oninput = ((event) => {
+    filterSearchResults(event);
+});
+
+function filterSearchResults(event) {
     resultsBlock.innerHTML = "";
+    resultData = [];
     data.forEach(item => {
         if ((item.text.toLowerCase().indexOf(event.target.value.toLowerCase()) !== -1) &&
             (event.target.value !== '')) {
@@ -94,38 +106,55 @@ searchInput.oninput = ((event) => {
                 item.text.toLowerCase().indexOf(event.target.value.trim().toLowerCase()) !== -1);
             resultsBlock.innerHTML = '';
             resultData.forEach(item => {
-                row += `  <div class="resultRow">
+                if(item.category === "person"){
+                    SearchRow += `  <div class="resultRow">
+                            <div class="resultRow_main">  
+                
+                                <img src="${item.imageURL}" alt="" class="resultRow_person-img">
+                                <p class="resultRow_text">${item.text}</p>
+                            </div>
+                            <span class="resultRow_btn" data-value="${item.text}">Select</span>
+                        </div>`;
+                }else{
+                    SearchRow += `  <div class="resultRow">
                             <div class="resultRow_main">
                                 <span class="resultRow_label" style="background-color: ${item.color}">${item.label}</span>
                                 <p class="resultRow_text">${item.text}</p>
                             </div>
                             <span class="resultRow_btn" data-value="${item.text}">Select</span>
                         </div>`;
-                resultsBlock.innerHTML = row;
+                }
+                resultsBlock.innerHTML = SearchRow;
             });
             highlightFirstMatch();
-            row = '';
+            SearchRow = '';
         } else if (event.target.value === '') {
-            resultsBlock.innerHTML = '';
+            resultData = [];
+            resultsBlock.innerHTML = "";
             searchInputBlock.classList.remove('active');
+        } else if(event.target.value !== '' && !resultData.length){
+            resultData = [];
+            searchInputBlock.classList.add('active');
+            let nothingToShow = `<div class="resultRow_text">No results</div>`;
+            resultsBlock.innerHTML = nothingToShow;
         }
     });
 
-});
+}
 
 function displayRecentChoice() {
     if (recentChoiceArr.length) {
         searchInputBlock.classList.add('active');
-        row = `<div class="resultRow_hint">Recent searches</div>`;
+        recentSearchRow = `<div class="resultRow_hint">Recent searches</div>`;
         recentChoiceArr.forEach(item => {
-            row += `  <div class="resultRow">
+            recentSearchRow += `  <div class="resultRow">
                 <div class="resultRow_main">
                     <p class="resultRow_text">${item}</p>
                 </div>
                 <span class="resultRow_btn" data-value="${item}">Select</span>
             </div>`;
         });
-        resultsBlock.innerHTML = row;
+        resultsBlock.innerHTML = recentSearchRow;
         highlightFirstMatch();
     }
 }
@@ -149,7 +178,7 @@ function saveRecentData(currentValue) {
     }
 }
 
-function highlightChoice(elem) {
+function highlightChoice(elem, event) {
     saveRecentData(elem.dataset.value);
     let resultRows = document.getElementsByClassName("resultRow");
     for (let i = 0; i < resultRows.length; i++) {

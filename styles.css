@@ -84,7 +84,7 @@
 
 .searchBlock_inputBlock:before {
     content: '';
-    background-image: url("search.png");
+    background-image: url("./assets/img/search.png");
     width: 30px;
     height: 30px;
     background-size: contain;
@@ -129,6 +129,23 @@ span.resultRow_label {
     font-size: 12px;
     font-weight: 300;
     cursor: pointer;
+    padding-right: 25px;
+    position: relative;
+}
+
+.resultRow_btn:after{
+    content: url("./assets/img/enter.svg");
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background-color: #A8ABB6;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .resultRow_hint{
@@ -140,5 +157,12 @@ span.resultRow_label {
 
 .resultRow_current-choice{
     background-color: #EBECF2;
+}
+
+.resultRow_person-img{
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+    border-radius: 50%;
 }
 
