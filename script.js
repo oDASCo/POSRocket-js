@@ -25,15 +25,11 @@ const data = [
     }
 ];
 let resultData = [];
-
 let resultsBlock = document.getElementById('results');
 let SearchRow = "";
 let recentSearchRow = "";
-
-
 let searchInput = document.getElementById('searchInput');
 let searchInputBlock = document.getElementById('searchInputBlock');
-
 let recentChoiceArr = [];
 
 searchInput.addEventListener("click", () => {
@@ -52,38 +48,38 @@ searchInput.addEventListener("keyup", (event) => {
     let currentInputValue = searchInput.value;
     let currentRow = document.getElementsByClassName("resultRow_current-choice");
     let allRowElements = document.getElementsByClassName("resultRow");
-    if(currentRow[0]){
-        if(event.key === "ArrowDown"){
-            if(currentRow[0].nextElementSibling){
+    if (currentRow[0]) {
+        if (event.key === "ArrowDown") {
+            if (currentRow[0].nextElementSibling) {
                 currentRow[0].nextElementSibling.classList.add("resultRow_current-choice");
                 currentRow[0].classList.remove("resultRow_current-choice");
-            }else{
+            } else {
                 allRowElements[allRowElements.length - 1].classList.remove("resultRow_current-choice");
                 allRowElements[0].classList.add("resultRow_current-choice");
             }
         }
-        if(event.key === "ArrowUp"){
-            if(currentRow[0].previousElementSibling && currentRow[0].previousElementSibling.className !== "resultRow_hint"){
+        if (event.key === "ArrowUp") {
+            if (currentRow[0].previousElementSibling && currentRow[0].previousElementSibling.className !== "resultRow_hint") {
                 currentRow[0].previousElementSibling.classList.add("resultRow_current-choice");
                 currentRow[1].classList.remove("resultRow_current-choice");
-            }else{
+            } else {
                 allRowElements[0].classList.remove("resultRow_current-choice");
                 allRowElements[allRowElements.length - 1].classList.add("resultRow_current-choice");
             }
         }
     }
     if (event.key === "Enter") {
-        if(currentRow[0] && currentInputValue){
+        if (currentRow[0] && currentInputValue) {
             let highlightText = currentRow[0].childNodes[1].childNodes[3].innerText;
             searchInput.value = highlightText;
             saveRecentData(highlightText);
             filterSearchResults(event);
-        }else if(currentRow[0] && !currentInputValue){
+        } else if (currentRow[0] && !currentInputValue) {
             let highlightText = currentRow[0].childNodes[1].innerText;
             searchInput.value = highlightText;
             saveRecentData(highlightText);
             filterSearchResults(event);
-        }else{
+        } else {
             saveRecentData(currentInputValue);
         }
 
@@ -106,7 +102,7 @@ function filterSearchResults(event) {
                 item.text.toLowerCase().indexOf(event.target.value.trim().toLowerCase()) !== -1);
             resultsBlock.innerHTML = '';
             resultData.forEach(item => {
-                if(item.category === "person"){
+                if (item.category === "person") {
                     SearchRow += `  <div class="resultRow">
                             <div class="resultRow_main">  
                 
@@ -115,7 +111,7 @@ function filterSearchResults(event) {
                             </div>
                             <span class="resultRow_btn" data-value="${item.text}">Select</span>
                         </div>`;
-                }else{
+                } else {
                     SearchRow += `  <div class="resultRow">
                             <div class="resultRow_main">
                                 <span class="resultRow_label" style="background-color: ${item.color}">${item.label}</span>
@@ -132,7 +128,7 @@ function filterSearchResults(event) {
             resultData = [];
             resultsBlock.innerHTML = "";
             searchInputBlock.classList.remove('active');
-        } else if(event.target.value !== '' && !resultData.length){
+        } else if (event.target.value !== '' && !resultData.length) {
             resultData = [];
             searchInputBlock.classList.add('active');
             let nothingToShow = `<div class="resultRow_text">No results</div>`;
